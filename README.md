@@ -1,0 +1,5 @@
+# ruka
+
+
+PROJECTO CREDIT DE SINTESI DE DAM
+
