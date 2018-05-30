@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+<!--    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />-->
+   
+
+<!--    <link rel="stylesheet" type="text/css" href="css/index.css" />-->
+ <!--   <link rel="stylesheet" href="css/general.css">-->
+  <!--  <link rel="stylesheet" href="css/plcamera.css">-->
+   
+    <title>appRuka</title>
+</head>
+
+<style type="text/css">
+/*////////////////////////CSS GENERAL/////////////////////////////*/
+    
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Helvetica,Arial, sans-serif;
+}
+
+#app{
+    width: 100%;
+    
+}
+
+header{
+    width: 100%;
+    height: 56px;
+    background-color:#2196f3;
+    
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    top:0;
+}
+
+header h1{
+    color:white;
+    font-size:20px;
+    font-weight: 500;
+}
+
+main{
+    width: 100%;
+/*    border: 2px solid black;*/
+    
+    position: absolute;
+    top:56px;
+    bottom: 40px;
+}
+
+footer{
+    width: 100%;
+    height: 48px;
+    background-color:#2196f3;
+    
+    position: absolute;
+    bottom: 0;
+}  
+    
+/*////////////////////////CSS APLICACIO/////////////////////////////*/
+ main {
+    display:flex;
+    flex-direction: column;
+/*    align-content: center;*/
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#servo1, #servo2, #servo3, #servo4, #servo5, #servo6{
+	 width: 100%;
+	 padding:1%;
+}
+
+
+input[type="button"]{
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+
+#guardarPos1{
+    background-color: #2196f3;
+}
+
+
+#guardarPos2{
+    background-color: #fd4140;
+    margin-left: 10px;
+}
+
+#play{
+    background-color: #92ba3f;
+    margin-left: 10px;
+	 
+}
+
+
+.slider {
+    -webkit-appearance: none;
+    width: 90%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+	margin-left:5%;
+	margin-right:5%;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+p{
+	margin-left: 5%;
+}
+
+    
+</style>   
+
+<body>
+ 
+     <div id="app">
+          <header>
+              <h1>appRuka</h1>
+          </header> 
+            
+            <main>
+			
+				<div id="servo1">
+					<div class="slidecontainer">
+					  <p>Servo 1 (BASE)</p>
+					  <input type="range" min="160" max="590" value="0" id="range1"  class="slider" oninput="servo1()">
+					 <p>Valor: <span id="range1_value"></span></p>
+					</div>
+				</div>
+				
+				<div id="servo2">
+					<div class="slidecontainer">
+					  <p>Servo 2</p>
+					  <input type="range" min="350" max="530" value="0" id="range2"  class="slider" oninput="servo2()">
+					 <p>Valor: <span id="range2_value"></span></p>
+					</div>
+				</div>
+				
+				<div id="servo3">
+					<div class="slidecontainer">
+					  <p>Servo 3</p>
+					  <input type="range" min="300" max="450" value="0" id="range3"  class="slider" oninput="servo3()">
+					 <p>Valor: <span id="range3_value"></span></p>
+					</div>
+				</div>
+				
+				<div id="servo4">
+					<div class="slidecontainer">
+					  <p>Servo 4</p>
+					  <input type="range" min="300" max="400" value="0" id="range4"  class="slider" oninput="servo4()">
+					 <p>Valor: <span id="range4_value"></span></p>
+					</div>
+				</div>
+				
+				<div id="servo5">
+					<div class="slidecontainer">
+					  <p>Servo 5</p>
+					  <input type="range" min="350" max="420" value="0" id="range5"  class="slider" oninput="servo5()">
+					 <p>Valor: <span id="range5_value"></span></p>
+					</div>
+				</div>
+				
+				<div id="servo6">
+					<div class="slidecontainer">
+					  <p>Servo 6</p>
+					  <input type="range" min="480" max="520" value="0" id="range6"  class="slider" oninput="servo6()">
+					 <p>Valor: <span id="range6_value"></span></p>
+					</div>
+				</div>
+			
+
+                <div id="opcions">
+                     <input type="button" id="guardarPos1" value="POS1">
+				     <input type="button" id="guardarPos2" value="POS2">
+				     <input type="button" id="play" value="PLAY">
+                </div>
+				
+				
+				
+				
+               
+            </main>
+            
+            <footer></footer>
+     </div>
+	 
+	 
+	 
+	
+    <script>
+    
+       window.addEventListener("load",inici,false);
+
+    function inici(){
+        console.log(" FUNCIO INICI: " + inici.name);
+
+       //SERVO 1
+        slider1 = document.getElementById("range1");
+        output1 = document.getElementById("range1_value");
+		
+	   //SERVO 2
+		slider2 = document.getElementById("range2");
+        output2 = document.getElementById("range2_value");
+		
+		//SERVO 3
+		slider3 = document.getElementById("range3");
+        output3 = document.getElementById("range3_value");
+		
+		//SERVO 4
+		slider4 = document.getElementById("range4");
+        output4 = document.getElementById("range4_value");
+		
+		//SERVO 5
+		slider5 = document.getElementById("range5");
+        output5 = document.getElementById("range5_value");
+		
+		//SERVO 6
+		slider6 = document.getElementById("range6");
+        output6 = document.getElementById("range6_value");
+		
+		
+
+        botoGuardar1 = document.getElementById("guardarPos1");
+        botoGuardar1.addEventListener("click", insertServo1_1,false);
+
+        botoGuardar2 = document.getElementById("guardarPos2");
+        botoGuardar2.addEventListener("click", insertServo1_2,false);
+
+        botoReproduir = document.getElementById("play");
+        botoReproduir.addEventListener("click", reproduir,false);
+
+        //VARIABLES TEMPORALS PER FER LA PROVA
+        //valor1;
+        //valor2;
+
+        address_ip="192.168.100.20";
+    }
+        
+        
+        //FUNCIO: GUARDAR POSICIO_1 DEL SERVOMOTOR_1;
+    function insertServo1_1(){
+        console.log("has clicat boto guardar posicio servo 1");
+        console.log("valor de posicio 1 es : " + range1.value);
+        var posicio1 = range1.value;
+		
+		var posicio2 = range2.value;
+		
+		var posicio3 = range3.value;
+		
+		var posicio4 = range4.value;
+		
+		var posicio5 = range5.value;
+		
+		var posicio6 = range6.value;
+        console.log("s'ha guardat la posicio: " + posicio1);
+
+        //guardem la posicio a la BD
+         var database = firebase.database().ref().child("servo1").update({
+            pos1:posicio1
+
+        });
+		
+		database = firebase.database().ref().child("servo2").update({
+            pos1:posicio2
+
+        });
+		
+		database = firebase.database().ref().child("servo3").update({
+            pos1:posicio3
+
+        });
+		
+		database = firebase.database().ref().child("servo4").update({
+            pos1:posicio4
+
+        });
+		
+		database = firebase.database().ref().child("servo5").update({
+            pos1:posicio5
+
+        });
+		
+		database = firebase.database().ref().child("servo6").update({
+            pos1:posicio6
+
+        });
+		
+		
+		
+    }
+        
+        //FUNCIO: GUARDAR POSICIO_2 DEL SERVOMOTOR_1;
+    function insertServo1_2(){
+        console.log("has clicat boto guardar posicio servo 2");
+        console.log("valor de posicio 2 es : " + range1.value);
+        var posicio21 = range1.value;
+		
+		var posicio22 = range2.value;
+		
+		var posicio23 = range3.value;
+		
+		var posicio24 = range4.value;
+		
+		var posicio25 = range5.value;
+		
+		var posicio26 = range6.value;
+       //console.log("s'ha guardat la posicio: " + posicio2);
+
+        //guardem la posicio a la BD
+         var database = firebase.database().ref().child("servo1").update({
+
+            pos2:posicio21
+        });
+		
+		database = firebase.database().ref().child("servo2").update({
+
+            pos2:posicio22
+        });
+		
+		database = firebase.database().ref().child("servo3").update({
+
+            pos2:posicio23
+        });
+		
+		database = firebase.database().ref().child("servo4").update({
+
+            pos2:posicio24
+        });
+		
+		database = firebase.database().ref().child("servo5").update({
+
+            pos2:posicio25
+        });
+		
+		database = firebase.database().ref().child("servo6").update({
+
+            pos2:posicio26
+        });
+    }
+	
+
+        
+        //FUNCIO PLAY , CRIDA A CONSULTA() VALORS DE LA BD, DESPRES ELS MOSTRE AMB FUNCIO CONSOLA()
+    function reproduir(){
+        console.log("FUNCIO REPRODUIR");
+		consola();
+        
+		consulta();
+		servo1_auto(valor1,valor2);
+		 
+		console.log("ARA SERVO2");
+		
+		consulta2();
+		servo2_auto(valor1,valor2);
+		
+		consulta3();
+		servo3_auto(valor1,valor2);
+		
+		consulta4();
+		servo4_auto(valor1,valor2);
+		
+		consulta5();
+		servo5_auto(valor1,valor2);
+		
+		consulta6();
+		servo6_auto(valor1,valor2);
+		
+
+    }
+        
+        //FUNCIO CONSOLA , ENS RETORNA ESTRUCTURA DE LA BD AMB TOTS ELS VALORS 
+   function consola(){
+        console.log("FUNCIO CONSOLA");
+
+        var users=[];
+        var db = firebase.database().ref();
+        var db2 = firebase.database().ref().child("servo1").child("pos2");
+        db.on("value", function (snap) {
+        users=(snap.val()); 
+        console.log(users);
+        });
+   }
+        
+    //FUNCIO QUE RECULL VALORS DE LA BD
+    function consulta(){
+        console.log("FUNCIO CONSULTA");
+
+       var db = firebase.database().ref().child("servo1").child("pos1");
+       var db2 = firebase.database().ref().child("servo1").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+	
+	 function consulta2(){
+       var db = firebase.database().ref().child("servo2").child("pos1");
+       var db2 = firebase.database().ref().child("servo2").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+	
+	function consulta3(){
+       var db = firebase.database().ref().child("servo3").child("pos1");
+       var db2 = firebase.database().ref().child("servo3").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+	
+	function consulta4(){
+       var db = firebase.database().ref().child("servo4").child("pos1");
+       var db2 = firebase.database().ref().child("servo4").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+	
+	function consulta5(){
+       var db = firebase.database().ref().child("servo5").child("pos1");
+       var db2 = firebase.database().ref().child("servo5").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+	
+	function consulta6(){
+       var db = firebase.database().ref().child("servo6").child("pos1");
+       var db2 = firebase.database().ref().child("servo6").child("pos2");
+
+        db.once("value", function (snap) {
+            valor1=(snap.val()); 
+            console.log("    valor1: " + valor1);
+       });
+
+        db2.on("value", function (snap) {
+            valor2=(snap.val()); 
+            console.log("    valor2: " + valor2);
+       });
+    }
+        
+        
+    //FUNCIO: QUE ACTUE SOBRE EL SERVO_1 MANUALMENT
+    function servo1(){
+        console.log("FUNCIO SERVO_1 MANUALMENT: " + inici.name);
+
+        output1.innerHTML = slider1.value;
+		//OBJECTE xhttp1 objecte que ens serveix per intercanviar dades amb el servidor
+        xhttp1 = new XMLHttpRequest();
+		//Condicio estat 
+        xhttp1.onreadystatechange = function servo1() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+	  //Solic·citut a un servidor amb metodes OPEN() i SEND de objecte XMLHttpRequest passant per parametre el VALOR_DE_LA_BARRA
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo1?speed=" + slider1.value, true);
+      xhttp1.send();
+    }
+	
+	 //FUNCIO: QUE ACTUE SOBRE EL SERVO_2 MANUALMENT
+	function servo2(){
+        console.log("FUNCIO SERVO_2 MANUALMENT: " + inici.name);
+
+        output2.innerHTML = slider2.value;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo2() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo2?speed=" + slider2.value, true);
+      xhttp1.send();
+    }
+	
+	//FUNCIO: QUE ACTUE SOBRE EL SERVO_3 MANUALMENT
+	function servo3(){
+        console.log("FUNCIO SERVO_3 MANUALMENT: " + inici.name);
+
+        output3.innerHTML = slider3.value;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo3() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo3?speed=" + slider3.value, true);
+      xhttp1.send();
+    }
+	
+	//FUNCIO: QUE ACTUE SOBRE EL SERVO_4 MANUALMENT
+	function servo4(){
+        console.log("FUNCIO SERVO_4 MANUALMENT: " + inici.name);
+
+        output4.innerHTML = slider4.value;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo4() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo4?speed=" + slider4.value, true);
+      xhttp1.send();
+    }
+	
+	//FUNCIO: QUE ACTUE SOBRE EL SERVO_5 MANUALMENT
+	function servo5(){
+        console.log("FUNCIO SERVO_5 MANUALMENT: " + inici.name);
+
+        output5.innerHTML = slider5.value;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo5() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo5?speed=" + slider5.value, true);
+      xhttp1.send();
+    }
+	
+	//FUNCIO: QUE ACTUE SOBRE EL SERVO_6 MANUALMENT
+	function servo6(){
+        console.log("FUNCIO SERVO_6 MANUALMENT: " + inici.name);
+
+        output6.innerHTML = slider6.value;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo6() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+      xhttp1.open("GET", "http://"+address_ip+":8181/set_servo6?speed=" + slider6.value, true);
+      xhttp1.send();
+    }
+       
+        
+    //FUNCIO: QUE ACTUE SOBRE EL SERVO_1 AUTOMATICAMENT
+    function servo1_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo1() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo1?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo1?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+	
+	
+	    //FUNCIO: QUE ACTUE SOBRE EL SERVO_2 AUTOMATICAMENT
+    function servo2_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo2() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo2?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo2?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+	
+	
+		
+	    //FUNCIO: QUE ACTUE SOBRE EL SERVO_3 AUTOMATICAMENT
+    function servo3_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo3() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo3?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo3?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+	
+		    //FUNCIO: QUE ACTUE SOBRE EL SERVO_4 AUTOMATICAMENT
+    function servo4_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo4() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo4?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo4?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+	
+	
+	
+			    //FUNCIO: QUE ACTUE SOBRE EL SERVO_5 AUTOMATICAMENT
+    function servo5_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo5() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo5?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo5?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+	
+				    //FUNCIO: QUE ACTUE SOBRE EL SERVO_6 AUTOMATICAMENT
+    function servo6_auto(valor1, valor2){
+        var _valor1=valor1;
+        var _valor2=valor2;
+        xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function servo6() {
+            if (this.readyState == 4 && this.status == 200) {
+        }
+      };
+           var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log(valor1+'--->');
+            xhttp1.open("GET", "http://"+address_ip+":8181/set_servo6?speed=" + _valor1, true);
+            xhttp1.send();
+                sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---'+valor2); 
+                    xhttp1.open("GET", "http://"+address_ip+":8181/set_servo6?speed=" + _valor2, true);
+                    xhttp1.send();
+                };
+       } 
+
+    }
+        
+        
+        //FUNCIO SLEEP EN MILLISEGONS 
+    function sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    }
+
+
+
+    //FUNCIO QUE SE LI PASSEN 2 VALORS , I FA EL BUCLE*
+    function bucle(valor,valor2){
+        console.log("valor: "+valor);
+        console.log("valor2: "+valor2);
+
+       var paso;
+       for (paso = 0; paso < 5; paso++) {
+            console.log('--->');
+            sleep(1000);
+                for (paso = 0; paso < 5; paso++) {
+                console.log('<---');
+                };
+       }
+    };
+	
+
+
+    </script>
+    
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	
+	<script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyB7aXkk1yFQPxE7Uy-2MoiC0mIXvAzh4Sk",
+        authDomain: "yblyshchak.firebaseapp.com",
+        databaseURL: "https://yblyshchak.firebaseio.com",
+        projectId: "yblyshchak",
+        storageBucket: "yblyshchak.appspot.com",
+        messagingSenderId: "707419949543"
+          };
+          firebase.initializeApp(config);
+	</script>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    
+</body>
+
+</html>
